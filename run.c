@@ -4,7 +4,8 @@
 #include <math.h>
 #include <limits.h>
 #include "world.h"
-
+#include <wchar.h>
+#include <locale.h>
 void print_world_info(w_strct w){
     printf("World Information: \nWidth: %d\nHeight: %d\nTurns: %d\nTribes: %d\n", w.width, w.height, w.turns, w.tribes);
 }
@@ -27,8 +28,6 @@ int read_int(char* str){
 }
 
 w_strct init_game(w_strct *w){
-    // w_strct w;
-    // w_strct *w_ptr = &w;
     printf("Welcome to the Game of Life. \n");
     printf("How many turns do you want the simulation to run?");
     int turns = read_int("The game will run for %d turns...\n");
@@ -59,20 +58,15 @@ w_strct init_game(w_strct *w){
         w->width = MEDIUM_WIDTH;
         break;
     }    
-    // print_world_info(w); 
     init_world_map(w);
-    // print_map(w);
-
 }
 
 
-
-
 int main(int argc, char **arv){
-    w_strct w;
-    w_strct *w_ptr = &w;
-    w_strct world_struct = init_game(w_ptr);
-    print_map(w);
-
+    // w_strct w;
+    // w_strct *w_ptr = &w;
+    // w_strct world_struct = init_game(w_ptr);
+    // print_map(w);
+   
     return 0;
 }
