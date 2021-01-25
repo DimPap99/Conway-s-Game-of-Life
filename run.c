@@ -4,8 +4,7 @@
 #include <math.h>
 #include <limits.h>
 #include "world.h"
-#include <wchar.h>
-#include <locale.h>
+
 void print_world_info(w_strct w){
     printf("World Information: \nWidth: %d\nHeight: %d\nTurns: %d\nTribes: %d\n", w.width, w.height, w.turns, w.tribes);
 }
@@ -34,8 +33,9 @@ w_strct init_game(w_strct *w){
     w->turns = turns;
     printf("Choose the world size: \n1.Press 0 for small.\n2.Press 1 for medium.\n3.Press 2 for large. ");
     int world_size = read_int("You picked world size %d...\n");
-    printf("Choose the number of tribes you want the world to contain: ");
+    printf("Choose the number of tribes you want the world to contain. Available range 1-5: ");
     int tribes = read_int("The world will contain %d tribes...\n");
+    if (tribes < 1 || tribes > 5) tribes = 1; //default
     w->tribes = tribes;
     switch(world_size){
         case 0:
@@ -66,7 +66,14 @@ int main(int argc, char **arv){
     // w_strct w;
     // w_strct *w_ptr = &w;
     // w_strct world_struct = init_game(w_ptr);
-    // print_map(w);
-   
+    // print_map(w);    
+    c_struct* a = malloc(3 * sizeof(c_struct)); 
+    c_struct c;
+    c.column = 1;
+    c.row = 2;  
+    a[0] = c;
+    printf("will die at %d", a[0].column);
+    printf("%d", find_valid_neighbors(a, 1, 1, 10));
+    free(a);
     return 0;
 }
