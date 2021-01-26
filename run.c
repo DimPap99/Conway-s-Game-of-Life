@@ -62,18 +62,16 @@ w_strct init_game(w_strct *w){
 }
 
 
-int main(int argc, char **arv){
-    // w_strct w;
-    // w_strct *w_ptr = &w;
-    // w_strct world_struct = init_game(w_ptr);
-    // print_map(w);    
-    c_struct* a = malloc(3 * sizeof(c_struct)); 
-    c_struct c;
-    c.column = 1;
-    c.row = 2;  
-    a[0] = c;
-    printf("will die at %d", a[0].column);
-    printf("%d", find_valid_neighbors(a, 1, 1, 10));
+int main(int argc, char *arv[]){
+    w_strct w;
+    w_strct *w_ptr = &w;
+    w_strct world_struct = init_game(w_ptr);
+    print_map(w);    
+    c_struct* a = malloc(8 * sizeof(c_struct)); 
+    int array_index = find_valid_neighbors(a, 1, 1, 10);
     free(a);
+    free(w.world_map);
+    // printf("%d", a[0].row);
+
     return 0;
 }

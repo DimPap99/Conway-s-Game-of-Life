@@ -124,94 +124,99 @@ void init_world_map(w_strct *w){
 int find_valid_neighbors(c_struct *array, int current_row, int current_col, int world_width){
     
     //Depending on the position of our current cell (row,col) we have 8 different possibilities
-    //Regardless of the position of a cell it will always have at least 3 neighbors
-    //So our array will have pre alocated memory for 3 cell structs 
-    //when we asses that we have more than 3 neighbors we will re-allocate memory
+    //So our array will have pre alocated memory for 8 cell structs 
+    
     int count_neighbors = 0; //count_neighbors will act as an index we will also return it 
     //to iterate over our array later
     if(array != NULL){
         if(current_row - 1 >= 0){
-            count_neighbors++;
+            
             c_struct c;
             c.row = current_row - 1;
             c.column = current_col;
             array[count_neighbors] = c;
+            count_neighbors++;
         }
 
         if(current_row + 1 <= world_width){
-            count_neighbors++;
             c_struct c;
             c.row = current_row + 1;
             c.column = current_col;
+            c.column = current_col;
             array[count_neighbors] = c;
-        }
-
-        if(current_col + 1 <= world_width){
+            if(array == NULL) return -1;
             count_neighbors++;
+        }
+        // printf("%d\n", count_neighbors);
+        if(current_col + 1 <= world_width){
+            
             c_struct c;
             c.row = current_row;
             c.column = current_col + 1;
             array[count_neighbors] = c;
-        }
-//After the first 3 neighbors we start checking for memory realocation
-        // printf("will die at %d\n", count_neighbors);
-         if(current_col - 1 >= 0){
             count_neighbors++;
-            printf("will die at %d\n", count_neighbors);
-            printf("cell: %d\n", array[2].column);
-            
-            array = realloc(array, count_neighbors * sizeof(c_struct));
-            if(array == NULL) return -1 ;
-            c_struct c;
+        }
+     
+
+//After the first 3 neighbors we start checking for memory realocation
+         if(current_col - 1 >= 0){
+             
+             c_struct c;
             c.row = current_row;
             c.column = current_col - 1;
-            array[count_neighbors] = c;
+           
+            array[count_neighbors]=c;
+            count_neighbors++;
+            
         }
 
          if(current_col + 1 <= world_width && current_row + 1 <= world_width){
-            count_neighbors++;
-            printf("will die at %d\n", count_neighbors);
-
-            //if(count_neighbors > 3) array = realloc(array, count_neighbors * sizeof(c_struct));
-            if(array == NULL) return -1 ;
-
-            c_struct c;
+              
+             c_struct c;
             c.row = current_row + 1;
             c.column = current_col + 1;
+            c.column = current_col;
             array[count_neighbors] = c;
+
+            count_neighbors++;
+            
+            
         }
 
         if(current_col - 1 >= 0 && current_row - 1 >= 0){
-            count_neighbors++;
-            printf("will die at %d\n", count_neighbors);
-//if(count_neighbors > 3) array = realloc(array, count_neighbors * sizeof(c_struct));
-            if(array == NULL) return -1 ;
-            c_struct c;
+          
+             c_struct c;
             c.row = current_row - 1;
             c.column = current_col - 1;
+            c.column = current_col;
             array[count_neighbors] = c;
+
+            count_neighbors++;
+            
         }
 
         if(current_col - 1 >= 0 && current_row + 1 <= world_width){
-            count_neighbors++;
-            printf("will die at %d\n", count_neighbors);
-          //  if(count_neighbors > 3) array = realloc(array, count_neighbors * sizeof(c_struct));
-            if(array == NULL) return -1 ;
-            c_struct c;
+          
+             c_struct c;
             c.row = current_row + 1;
-            c.column = current_col - 1;
+            c.column = current_col  - 1;
+            c.column = current_col;
             array[count_neighbors] = c;
+            count_neighbors++;
+            
+
         }
 
         if(current_col + 1 <= world_width && current_row - 1 >= 0){
-            count_neighbors++;
-            printf("will die at %d\n", count_neighbors);
-            //if(count_neighbors > 3) array = realloc(array, count_neighbors * sizeof(c_struct));
-            if(array == NULL) return -1 ;
-            c_struct c;
+           
+             c_struct c;
             c.row = current_row - 1;
             c.column = current_col + 1;
+           c.column = current_col;
             array[count_neighbors] = c;
+
+            count_neighbors++;
+            
         }
 
     return count_neighbors;
