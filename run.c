@@ -26,6 +26,17 @@ int read_int(char* str){
     
 }
 
+void play_turn(w_strct *w){
+    int neighbor_index = 0;
+    for(int row = 0; row < w->height; row++){
+        for(int col = 0; col < w->height;row++){
+            c_struct* neighbors = malloc(8 * sizeof(c_struct)); 
+            neighbor_index = find_valid_neighbors(neighbors, row, col, w->height);
+        }
+    }
+
+}
+
 w_strct init_game(w_strct *w){
     printf("Welcome to the Game of Life. \n");
     printf("How many turns do you want the simulation to run?");

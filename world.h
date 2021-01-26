@@ -45,6 +45,10 @@ typedef struct world_cell
 void set_alive(int** array, int row, int col, int is_alive){
     array[row][col] = is_alive;
 }
+int is_alive(w_strct *w, int row, int col){
+    if(w->world_map[row][col] == DEAD) return 0;
+    else return w->world_map[row][col];
+}
 void print_map(w_strct w){
     for (int i=0; i<w.height; i++)
     {
