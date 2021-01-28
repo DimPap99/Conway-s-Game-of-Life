@@ -33,10 +33,8 @@ int read_int(char* str){
 void play_turn(w_strct *w){
     int neighbor_index = 0;
     change_struct *changes_array = malloc((w->height * w->width) * sizeof(change_struct));
-    printf("init change");
     int changes_size = 0;
    
-    printf("%d\n",w->height);
     for(int row = 0; row < w->height; row++){
         for(int col = 0; col < w->height;col++){
             c_struct* neighbors = malloc(8 * sizeof(c_struct));
