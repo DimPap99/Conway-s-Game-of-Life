@@ -133,7 +133,6 @@ int main(int argc, char *arv[]){
     for(int i = 0; i<w.turns;i++){
         play_turn(w_ptr);
         sleep(1);}
-    print_map(w);
     free(w.world_map);
 
     return 0;
