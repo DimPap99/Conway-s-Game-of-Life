@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <wchar.h>
 #include <locale.h>
-
 #ifndef world
 #define world
  //WORLD SIZES
@@ -41,12 +40,12 @@ typedef struct world_cell
     int column;
 }c_struct;
 
-
+//valid neighbors
 typedef struct neighbor_arr{
     int neighbor_index;
     enum TRIBE_ENUM max_tribe;
 }neighbor_struct;
-
+//save each change that should happen to a cell
 typedef struct change{
     int w_col;
     int w_row;
@@ -108,6 +107,7 @@ void init_world_map(w_strct *w){
                 tribe = DEAD;
             }else{
                 int numb;
+                //Hardcoded 1 because different tribes havent been impemented yet.
                 numb = 1;//rand_in_range(1,w->tribes); //generate different symbols depending on the tribe
                 switch(numb){ // determine randomly the tribe each cell belongs to 
                     case 1:

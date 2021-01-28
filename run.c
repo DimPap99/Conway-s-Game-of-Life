@@ -35,24 +35,17 @@ void play_turn(w_strct *w){
     change_struct *changes_array = malloc((w->height * w->width) * sizeof(change_struct));
     printf("init change");
     int changes_size = 0;
-    // int row;
-    // int col;
+   
     printf("%d\n",w->height);
     for(int row = 0; row < w->height; row++){
-      //  printf("%d\n",row);
         for(int col = 0; col < w->height;col++){
             c_struct* neighbors = malloc(8 * sizeof(c_struct));
-            //printf("init neigh"); 
             neighbor_index = find_valid_neighbors(neighbors, row, col, w->height);
-            //printf("found neigh"); 
-
             int same_tribe_neighbors = 0; //Same tribe or not dead
             int different_tribe_neighbors = 0;
             
            enum TRIBE_ENUM current_cell_tribe = w->world_map[row][col];
             for(int i=neighbor_index; i >= 0; i--){
-                // printf("%d\n",neighbors[i].row);
-                // printf("%d\n",neighbors[i].column);
                 enum TRIBE_ENUM neighbor_tribe = w->world_map[neighbors[i].row][neighbors[i].column]; //get current neighbors tribe
                 
                 if(neighbor_tribe != DEAD){
@@ -144,8 +137,6 @@ int main(int argc, char *arv[]){
         sleep(1);}
     print_map(w);
     free(w.world_map);
-
-    // printf("%d", a[0].row);
 
     return 0;
 }
