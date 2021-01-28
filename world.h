@@ -14,7 +14,7 @@ const int LARGE_WIDTH = 80;
 const int LARGE_HEIGHT = 80;
 //AVAILABLE TRIBES
 
-char* TRIBE0_UNICODE = "🔴";
+char* TRIBE0_UNICODE = "🔴"; //Until multiple tribes are implemented this one is considered ALIVE
 char* TRIBE1_UNICODE = "🔵";
 char* TRIBE2_UNICODE = "🔶";
 char* TRIBE3_UNICODE = "🔷";
@@ -42,6 +42,16 @@ typedef struct world_cell
 }c_struct;
 
 
+typedef struct neighbor_arr{
+    int neighbor_index;
+    enum TRIBE_ENUM max_tribe;
+}neighbor_struct;
+
+typedef struct change{
+    int w_col;
+    int w_row;
+    enum TRIBE_ENUM tribe;
+}change_struct;
 void set_alive(int** array, int row, int col, int is_alive){
     array[row][col] = is_alive;
 }
@@ -78,15 +88,17 @@ void print_map(w_strct w){
         }
         printf("%s","\n");
     }
+    printf("%s","\n\n\n\n");
 }
 void init_world_map(w_strct *w){
     w->world_map = malloc(w->height * sizeof *w->world_map);
     for (int i=0; i<w->height; i++)
     {
+        
         w->world_map[i] = malloc(w->width * sizeof * w->world_map[i]);
     }
     for (int i=0; i<w->height; i++)
-    {
+    {   
         for (int j=0; j<w->width; j++)
         {   
            
@@ -96,7 +108,7 @@ void init_world_map(w_strct *w){
                 tribe = DEAD;
             }else{
                 int numb;
-                numb = rand_in_range(1,w->tribes); //generate different symbols depending on the tribe
+                numb = 1;//rand_in_range(1,w->tribes); //generate different symbols depending on the tribe
                 switch(numb){ // determine randomly the tribe each cell belongs to 
                     case 1:
                         tribe = TRIBE0;
@@ -142,7 +154,7 @@ int find_valid_neighbors(c_struct *array, int current_row, int current_col, int 
             count_neighbors++;
         }
 
-        if(current_row + 1 <= world_width){
+        if(current_row + 1 <= world_width - 1){
             c_struct c;
             c.row = current_row + 1;
             c.column = current_col;
@@ -152,7 +164,7 @@ int find_valid_neighbors(c_struct *array, int current_row, int current_col, int 
             count_neighbors++;
         }
         // printf("%d\n", count_neighbors);
-        if(current_col + 1 <= world_width){
+        if(current_col + 1 <= world_width - 1){
             
             c_struct c;
             c.row = current_row;
@@ -174,7 +186,7 @@ int find_valid_neighbors(c_struct *array, int current_row, int current_col, int 
             
         }
 
-         if(current_col + 1 <= world_width && current_row + 1 <= world_width){
+         if(current_col + 1 <= world_width - 1 && current_row + 1 <= world_width - 1){
               
              c_struct c;
             c.row = current_row + 1;
@@ -199,7 +211,7 @@ int find_valid_neighbors(c_struct *array, int current_row, int current_col, int 
             
         }
 
-        if(current_col - 1 >= 0 && current_row + 1 <= world_width){
+        if(current_col - 1 >= 0 && current_row + 1 <= world_width - 1){
           
              c_struct c;
             c.row = current_row + 1;
@@ -211,7 +223,7 @@ int find_valid_neighbors(c_struct *array, int current_row, int current_col, int 
 
         }
 
-        if(current_col + 1 <= world_width && current_row - 1 >= 0){
+        if(current_col + 1 <= world_width - 1 && current_row - 1 >= 0){
            
              c_struct c;
             c.row = current_row - 1;

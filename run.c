@@ -4,11 +4,10 @@
 #include <math.h>
 #include <limits.h>
 #include "world.h"
-
+#include <unistd.h>
 void print_world_info(w_strct w){
     printf("World Information: \nWidth: %d\nHeight: %d\nTurns: %d\nTribes: %d\n", w.width, w.height, w.turns, w.tribes);
 }
-
 
 
 int read_int(char* str){
@@ -25,19 +24,81 @@ int read_int(char* str){
     return number;
     
 }
-
+    //RULES:
+    // Any live cell with two or three live neighbours survives.
+    // Any dead cell with three live neighbours becomes a live cell.
+    // All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+    // New rule: A cell with more neighbors of a different tribe gets converted into that tribe. If that cell also has 3 
+    //neighbors of the same tribes it dies.
 void play_turn(w_strct *w){
     int neighbor_index = 0;
+    change_struct *changes_array = malloc((w->height * w->width) * sizeof(change_struct));
+    printf("init change");
+    int changes_size = 0;
+    // int row;
+    // int col;
+    printf("%d\n",w->height);
     for(int row = 0; row < w->height; row++){
-        for(int col = 0; col < w->height;row++){
-            c_struct* neighbors = malloc(8 * sizeof(c_struct)); 
+      //  printf("%d\n",row);
+        for(int col = 0; col < w->height;col++){
+            c_struct* neighbors = malloc(8 * sizeof(c_struct));
+            //printf("init neigh"); 
             neighbor_index = find_valid_neighbors(neighbors, row, col, w->height);
+            //printf("found neigh"); 
+
+            int same_tribe_neighbors = 0; //Same tribe or not dead
+            int different_tribe_neighbors = 0;
+            
+           enum TRIBE_ENUM current_cell_tribe = w->world_map[row][col];
+            for(int i=neighbor_index; i >= 0; i--){
+                // printf("%d\n",neighbors[i].row);
+                // printf("%d\n",neighbors[i].column);
+                enum TRIBE_ENUM neighbor_tribe = w->world_map[neighbors[i].row][neighbors[i].column]; //get current neighbors tribe
+                
+                if(neighbor_tribe != DEAD){
+                    if(neighbor_tribe == TRIBE0) same_tribe_neighbors++;
+                    //else different_tribe_neighbors++;
+                }
+
+            }
+            free(neighbors);
+            if(current_cell_tribe == DEAD && same_tribe_neighbors == 3){
+                change_struct change;
+                change.w_row = row;
+                change.w_col = col;
+                change.tribe = TRIBE0;
+                changes_array[changes_size] = change;
+                changes_size++;
+                
+            }else if (current_cell_tribe != DEAD && (same_tribe_neighbors == 2 || same_tribe_neighbors == 3)){
+                change_struct change;
+                change.w_row = row;
+                change.w_col = col;
+                change.tribe = TRIBE0;
+                changes_array[changes_size] = change;
+                changes_size++;
+                
+            }else if(current_cell_tribe == TRIBE0 || current_cell_tribe == DEAD){
+                change_struct change;
+                change.w_row = row;
+                change.w_col = col;
+                change.tribe = DEAD;
+                changes_array[changes_size] = change;
+                changes_size++;
+            }
+
         }
     }
+        for(int i = 0; i < changes_size;i++){
+            w->world_map[changes_array[i].w_row][changes_array[i].w_col] = changes_array[i].tribe;
+        }
+        free(changes_array);
+        print_map(*w);
+        
 
 }
 
-w_strct init_game(w_strct *w){
+void init_game(w_strct *w){
     printf("Welcome to the Game of Life. \n");
     printf("How many turns do you want the simulation to run?");
     int turns = read_int("The game will run for %d turns...\n");
@@ -76,12 +137,14 @@ w_strct init_game(w_strct *w){
 int main(int argc, char *arv[]){
     w_strct w;
     w_strct *w_ptr = &w;
-    w_strct world_struct = init_game(w_ptr);
+    init_game(w_ptr);
     print_map(w);    
-    c_struct* a = malloc(8 * sizeof(c_struct)); 
-    int array_index = find_valid_neighbors(a, 1, 1, 10);
-    free(a);
+    for(int i = 0; i<w.turns;i++){
+        play_turn(w_ptr);
+        sleep(1);}
+    print_map(w);
     free(w.world_map);
+
     // printf("%d", a[0].row);
 
     return 0;
